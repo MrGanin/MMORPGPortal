@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<br>
+
+<h1>Напишите свой отклик</h1>
+
+<br>
+<form action="", method="post">
+
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <input type='submit', value="Отправить отклик"/>
+</form>
+
+{% endblock content %}

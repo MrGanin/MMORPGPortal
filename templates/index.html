@@ -1,0 +1,46 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h1>Профиль {{request.user.username}}</h1>
+<br><br>
+<h2>Отклики на Ваши публикации</h2>
+<table align="center" cellpadding="10">
+    <tr>
+        <td>
+            <p><h4>Заголовок публикации</h4></p>
+        </td>
+        <td>
+            <p><h4>Отклик на публикацию</h4></p>
+        </td>
+        <td>
+            <p><h4>Пользователь оставивший отклик</h4></p>
+        </td>
+    </tr>
+{% for feedback in my_post_feedback %}
+
+    <tr>
+        <td><p>{{ feedback.post.title }}</p></td>
+        <td><p>{{ feedback.text | truncatechars:20}}</p></td>
+        <td><p>{{ feedback.send_user }}</p></td>
+
+
+        <td>
+            <button> <a href="../{{feedback.pk}}/feedbackupdate/">Редактировать отклик</a> </button>
+        </td>
+        <td>
+            <button> <a href="../{{feedback.pk}}/misses/">Отклонить отклик</a> </button>
+        </td>
+        {% if feedback.accept == False %}
+        <td>
+            <button> <a href="../{{feedback.pk}}/toaccept/">Принять отклик</a> </button>
+        </td></tr>
+        {% endif %}
+        {% endfor %}
+
+</table>
+<br><br><br><hr><br>
+<button> <a href="{% url 'post_create' %}"> Создать публикацию</a> </button>
+<br>
+<hr>
+<button> <a href="../../accounts/logout/"> Выйти из аккаунта</a> </button>
+{% endblock content %}

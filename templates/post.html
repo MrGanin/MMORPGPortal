@@ -1,0 +1,50 @@
+{% extends 'flatpages/default.html' %} 
+{% load Appfilters %}
+{% load embed_video_tags %}
+
+{% block content %}
+
+<h1>{{ post.title }}</h1><hr>
+
+<h5>Дата публикации - {{ post.add_date | date:"d.m.Y"}}</h5><hr>
+        {{ post.text }}<br><br><br>
+        <table align="center">
+            <tr>
+            {% if images %}
+                {% for image in images %}
+                <td><p><img src="{{image.file.url}}" width="640" height="360"></p></td>
+                {% endfor %}
+            {% endif %}
+            </tr>
+            <tr>
+            {% if videos %}
+                {% for v in videos %}
+                        <td>{% video v.url '640x360' %}</td>
+                {% endfor %}
+            {% endif %}
+            </tr>
+
+
+        </table>
+<br><hr>
+<button><a href="{{ link_feedback }}">Оставить отклик!</a></button>
+<hr>
+<form action="" method="post">
+  {% csrf_token %}
+    <table align="center">
+        <tr>
+            <td>Категории:</td>
+            {% for cycle in post.category.all %}
+                <td>{{ cycle.title }}</td>
+                <td>
+                    {% if request.user not in cycle.subscribers.all %}
+                        <button><a href="{% url 'subscribe' cycle.pk  %}">Подписаться!</a></button>
+                    {% else %}
+                        <button><a href="{% url 'unsubscribe' cycle.pk  %}">Отписаться!</a></button>
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+ </form><br><br><br><br>
+{% endblock content %}
